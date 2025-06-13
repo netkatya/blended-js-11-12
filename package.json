@@ -1,11 +1,11 @@
 {
-  "name": "blended_products",
+  "name": "blended-js-11-12  ..ul",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/blended_products/",
+    "build": "vite build --base=/blended-js-11-12/",
     "preview": "vite preview"
   },
   "devDependencies": {
