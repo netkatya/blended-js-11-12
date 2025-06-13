@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/blended-js-11-12/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist</title>
+    <script type="module" crossorigin src="/blended-js-11-12/assets/styles-BK7AYJoX.js"></script>
+    <link rel="stylesheet" crossorigin href="/blended-js-11-12/assets/styles-CwHyMCDG.css">
+  </head>
+  <body>
+    <header class="header">
+  <div class="container header__container">
+    <a class="logo" href="./index.html" aria-label="Site logo">
+      <svg class="logo__icon" width="100" height="30">
+        <use href="/blended-js-11-12/assets/sprite-E8vg0sBb.svg#logo"></use>
+      </svg>
+    </a>
+
+    <form class="search-form">
+      <input
+        class="search-form__input"
+        type="text"
+        name="searchValue"
+        placeholder="Enter product name"
+      />
+      <button
+        type="button"
+        class="search-form__btn-clear"
+        aria-label="Clear search"
+      >
+        ×
+      </button>
+      <button class="search-form__btn" type="submit">Search</button>
+    </form>
+
+    <nav class="nav">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a class="nav__link {=$highlight-home}" href="./index.html">Home</a>
+        </li>
+        <li class="nav__item">
+          <a class="nav__link {=$highlight-cart}" href="./cart.html">
+            Cart
+            <span class="nav__count" data-cart-count>0</span>
+            <!-- Динамічне число -->
+          </a>
+        </li>
+        <li class="nav__item">
+          <a class="nav__link nav__link--active" href="./wishlist.html">
+            Wishlist
+            <span class="nav__count" data-wishlist-count>0</span>
+            <!-- Динамічне число -->
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <ul class="products"></ul>
+          <div class="not-found">
+            <div class="not-found__icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FF6B0A"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+              </svg>
+            </div>
+            <h2 class="not-found__title">No Products Found</h2>
+            <p class="not-found__description">
+              We couldn't find any items matching your search.<br />Please try
+              different keywords.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="modal">
+  <div class="modal__content">
+    <button class="modal__close-btn" type="button"></button>
+    <div class="modal-product"></div>
+    <div class="modal-product__actions">
+      <button
+        class="modal-product__btn modal-product__btn--wishlist"
+        type="button"
+      >
+        Add to Wishlist
+      </button>
+      <button class="modal-product__btn modal-product__btn--cart" type="button">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+  </body>
+</html>
