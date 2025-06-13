@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home page</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <load
+      src="./partials/header.html"
+      icon-path="img/sprite.svg#logo"
+      highlight-home="nav__link--active"
+    />
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <ul class="categories"></ul>
+          <ul class="products"></ul>
+          <div class="not-found">
+            <div class="not-found__icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FF6B0A"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+              </svg>
+            </div>
+            <h2 class="not-found__title">No Products Found</h2>
+            <p class="not-found__description">
+              We couldn't find any items matching your search.<br />Please try
+              different keywords.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <load src="./partials/modal.html" />
+    <script type="module" src="./home.js"></script>
+  </body>
+</html>

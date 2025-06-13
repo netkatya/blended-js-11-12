@@ -1,0 +1,44 @@
+.not-found {
+  display: none;
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 2rem;
+
+  text-align: center;
+
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.4s ease-out;
+  cursor: pointer;
+
+  &.not-found--visible {
+    display: block;
+  }
+}
+
+.not-found__icon {
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+
+  .not-found:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.not-found__title {
+  margin: 0 0 1rem;
+
+  color: #ff6b0a;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.not-found__description {
+  margin: 0;
+
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 1rem;
+}

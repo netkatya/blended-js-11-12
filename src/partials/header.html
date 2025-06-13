@@ -1,0 +1,48 @@
+<header class="header">
+  <div class="container header__container">
+    <a class="logo" href="./index.html" aria-label="Site logo">
+      <svg class="logo__icon" width="100" height="30">
+        <use href="{=$icon-path}"></use>
+      </svg>
+    </a>
+
+    <form class="search-form">
+      <input
+        class="search-form__input"
+        type="text"
+        name="searchValue"
+        placeholder="Enter product name"
+      />
+      <button
+        type="button"
+        class="search-form__btn-clear"
+        aria-label="Clear search"
+      >
+        ×
+      </button>
+      <button class="search-form__btn" type="submit">Search</button>
+    </form>
+
+    <nav class="nav">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a class="nav__link {=$highlight-home}" href="./index.html">Home</a>
+        </li>
+        <li class="nav__item">
+          <a class="nav__link {=$highlight-cart}" href="./cart.html">
+            Cart
+            <span class="nav__count" data-cart-count>0</span>
+            <!-- Динамічне число -->
+          </a>
+        </li>
+        <li class="nav__item">
+          <a class="nav__link {=$highlight-wishlist}" href="./wishlist.html">
+            Wishlist
+            <span class="nav__count" data-wishlist-count>0</span>
+            <!-- Динамічне число -->
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
