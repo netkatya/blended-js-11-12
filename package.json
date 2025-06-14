@@ -1,5 +1,5 @@
 {
-  "name": "blended-js-11-12  ..ul",
+  "name": "blended-js-11-12",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -17,7 +17,7 @@
   "author": "Grigoriy Chernish <cga.jsdev@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.9",
+    "axios": "^1.10.0",
     "izitoast": "^1.4.0",
     "vite-plugin-full-reload": "^1.2.0",
     "vite-plugin-html-inject": "^1.1.2"
