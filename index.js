@@ -1,0 +1,10 @@
+import"./assets/styles-BK7AYJoX.js";import{a as r}from"./assets/vendor-DGDcxXwr.js";r.defaults.baseURL="https://dummyjson.com";async function g(){const{data:t}=await r.get("/products/category-list");return["All",...t]}async function u(t=1,e=12){const s=(t-1)*e,{data:o}=await r.get(`/products?limit=${e}&skip=${s}`);return o.products}async function _(t,e=1,s=12){if(t==="All")return u(e,s);{const o=(e-1)*s,{data:c}=await r.get(`/products/category/${t}/?limit=${s}&skip=${o}`);return c.products}}const l={categoriesList:document.querySelector("ul.categories"),productsList:document.querySelector("ul.products")};function m(t){const e=t.map(s=>`<li class="categories__item">
+            <button class="categories__btn" type="button">${s}</button>
+        </li>`).join("");l.categoriesList.innerHTML=e}function p(t){const e=t.map(s=>`<li class="products__item" data-id="">
+        <img class="products__image" src="" alt=""/>
+        <p class="products__title"></p>
+        <p class="products__brand"><span class="products__brand--bold">Brand:</span></p>
+        <p class="products__category">Category: </p>
+        <p class="products__price">Price: $</p>
+    </li>`).join("");l.productsList.innerHTML=e}const y=document.querySelector("ul.categories"),d=document.querySelector("ul.products"),n=document.querySelector("div.not-found");let a=1;const i=12;document.addEventListener("DOMContentLoaded",async()=>{try{const t=await g();m(t);const e=await u(a,i);p(e)}catch(t){console.error("Error loading data:",t)}});y.addEventListener("click",async t=>{const e=t.target.closest("button.categories__btn");if(!e)return;const s=e.textContent.trim();document.querySelectorAll(".categories__btn").forEach(c=>{c.classList.remove("categories__btn--active")}),e.classList.add("categories__btn--active");let o=[];try{s==="All"?o=await u(a,i):o=await _(s,a,i),o.length===0?(n.classList.add("not-found--visible"),d.innerHTML=""):(n.classList.remove("not-found--visible"),p(o))}catch(c){console.error("Помилка при завантаженні продуктів:",c),n.classList.add("not-found--visible"),d.innerHTML=""}});
+//# sourceMappingURL=index.js.map
