@@ -11,14 +11,32 @@ export async function fetchCategories() {
 
 export async function fetchProducts(page = 1, limit = 12) {
     const skip = (page - 1) * limit;
-    const { data } = await axios.get(`/products?limit=${limit}&skip=${scip}`);
+    const { data } = await axios.get(`/products?limit=${limit}&skip=${skip}`);
+    return data.products;
+}
+
+export async function fetchProductsByCategory(category, page = 1, limit = 12) {
+    if (category === "All") {
+        return fetchProducts(page, limit)
+    } else {
+        const skip = (page - 1) * limit;
+        const { data } = await axios.get(`/products/category/${category}/?limit=${limit}&skip=${skip}`);
+        return data.products;
+    }
+}
+
+export async function fetchProductsById(id) {
+    const { data } = await axios.get(`/products/${id}`);
+    return data;
+}
+
+export async function searchProducts(query, page = 1, limit = 12) {
+    if (!query.trim()) return []; 
+    const skip = (page - 1) * limit;
+    const { data } = await axios.get(`/products/search?q=${query}&limit=${limit}&skip=${skip}`);
     return data.products;
 }
 
 
-axios.get("/docs/products").then().catch();
-axios.get("/products?limit=10&skip=10 ").then().catch();
-axios.get("/products/1").then().catch();
-axios.get("/products/search?q=nail").then().catch();
 
-axios.get("/products/category/smartphones").then().catch();
+
