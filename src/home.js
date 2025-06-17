@@ -1,8 +1,8 @@
 //Логіка сторінки Home
 
-import { fetchCategories, fetchProducts, fetchProductsByCategory } from "./js/products-api";
-import { renderCategories, renderProducts } from "./js/render-function";
-import { categoriesList, productsList, notFoundDiv } from "./js/constants";
+import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsById } from "./js/products-api";
+import { renderCategories, renderProducts, renderProductInModal } from "./js/render-function";
+import { categoriesList, productsList, notFoundDiv, modal, modalProduct } from "./js/constants";
 
 let currentPage = 1;
 const limit = 12;
@@ -51,5 +51,28 @@ categoriesList.addEventListener("click", async (event) => {
         console.error('Помилка при завантаженні продуктів:', error);
         notFoundDiv.classList.add('not-found--visible');
         productsList.innerHTML = '';
+    }
+});
+
+productsList.addEventListener("click", async (event) => {
+    const productItem = event.target.closest("li.products__item");
+    if (!productItem) return;
+
+    const productId = productItem.dataset.id;
+    if (!productId) return;
+
+    try {
+        const product = await fetchProductsById(productId);
+        renderProductInModal(product);
+        modal.classList.add("modal--is-open"); // Відкрити модальне вікно
+    } catch (error) {
+        console.error('Помилка при завантаженні продукту:', error);
+    }
+});
+
+// Додатково — закриття модалки
+modal.addEventListener("click", (event) => {
+    if (event.target === modal || event.target.classList.contains("modal__close-btn")) {
+        modal.classList.remove("modal--is-open");
     }
 });
