@@ -1,12 +1,12 @@
 //Робота з loacalStorage
 import { WISHLIST_KEY } from "./js/constants";
 
-export const detWishList = () => {
+export const getWishlist = () => {
     const data = localStorage.getItem(WISHLIST_KEY);
     return data ? JSON.parse(data) : [];
 }
 
-export const saveWishList = (wishlist) => {
+export const saveWishlist = (wishlist) => {
     localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
 }
 
@@ -14,7 +14,7 @@ export const addToWishlist = (productId) => {
     const wishlist = getWishlist();
     if (!wishlist.includes(productId)) {
         wishlist.push(productId);
-        saveWishList(wishlist);
+        saveWishlist(wishlist);
     }
 }
 

@@ -2,7 +2,7 @@
 
 import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsById, searchProducts } from "./js/products-api";
 import { renderCategories, renderProducts, renderProductInModal } from "./js/render-function";
-import { categoriesList, productsList, notFoundDiv, modal, modalProduct, searchForm, searchInput, categoryButtons, clearSearchBtn } from "./js/constants";
+import { categoriesList, productsList, notFoundDiv, modal, modalProduct, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton } from "./js/constants";
 
 
 let currentPage = 1;
@@ -133,3 +133,11 @@ clearSearchBtn.addEventListener("click", async () => {
         notFoundDiv.classList.add('not-found--visible');
     }
 });
+// wishlist
+wishButton.addEventListener("click", async (event) => {
+    const productItem = event.target.closest("li.products__item");
+    if (!productItem) return;
+
+    const productId = productItem.dataset.id;
+    if (!productId) return;
+})
