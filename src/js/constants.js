@@ -14,3 +14,4 @@ export const searchForm = document.querySelector(".search-form");
 export const searchInput = document.querySelector(".search-form__input");
 export const clearSearchBtn = document.querySelector(".search-form__btn-clear");
 export const wishButton = document.querySelector(".modal-product__btn--wishlist");
+export const navCount = document.querySelector("[data-wishlist-count]");

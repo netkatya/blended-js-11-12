@@ -1,16 +1,27 @@
 //Логіка сторінки Wishlist
 
 import { fetchProductsById } from "./js/products-api";
-import { renderProducts } from "./js/render-function";
-import { productsList, notFoundDiv } from "./js/constants";
-
-const WISHLIST_KEY = 'wishlist';
-
-const getWishlist = () => {
-  const data = localStorage.getItem(WISHLIST_KEY);
-  return data ? JSON.parse(data) : [];
+import { renderProducts, renderProductInModal } from "./js/render-function";
+import { productsList, notFoundDiv, modal, wishButton, navCount } from "./js/constants";
+import { getWishlist, addToWishlist, removeFromWishlist, isInWishlist } from "./js/storage";
+    
+    
+// Функція оновлення кількості у навігації
+const updateNavCount = () => {
+  const wishlist = getWishlist();
+  navCount.textContent = wishlist.length;
 };
 
+// Функція оновлення кнопки Wishlist в модалці
+const updateWishlistButton = (productId) => {
+  if (isInWishlist(productId)) {
+    wishButton.textContent = 'Remove from Wishlist';
+  } else {
+    wishButton.textContent = 'Add to Wishlist';
+  }
+};
+
+// Завантажити продукти з wishlist та відрендерити їх
 const loadWishlistProducts = async () => {
   const wishlist = getWishlist();
 
@@ -33,6 +44,46 @@ const loadWishlistProducts = async () => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', loadWishlistProducts);
+// При кліку на продукт відкриваємо модалку
+productsList.addEventListener("click", async (event) => {
+  const productItem = event.target.closest("li.products__item");
+  if (!productItem) return;
 
+  const productId = productItem.dataset.id;
+  if (!productId) return;
 
+  try {
+    const product = await fetchProductsById(productId);
+    renderProductInModal(product);
+    modal.classList.add("modal--is-open");
+
+    updateWishlistButton(productId);
+
+    // Логіка додавання/видалення до Wishlist
+    wishButton.onclick = () => {
+      if (isInWishlist(productId)) {
+        removeFromWishlist(productId);
+      } else {
+        addToWishlist(productId);
+      }
+      updateWishlistButton(productId);
+      updateNavCount();
+      loadWishlistProducts(); // Оновлюємо список на сторінці Wishlist після видалення
+    };
+
+  } catch (error) {
+    console.error('Помилка при завантаженні продукту:', error);
+  }
+});
+
+// Закриття модалки
+modal.addEventListener("click", (event) => {
+  if (event.target === modal || event.target.classList.contains("modal__close-btn")) {
+    modal.classList.remove("modal--is-open");
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadWishlistProducts();
+  updateNavCount(); // оновлення лічильника при завантаженні сторінки
+});

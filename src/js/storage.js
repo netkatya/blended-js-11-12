@@ -1,9 +1,14 @@
 //Робота з loacalStorage
-import { WISHLIST_KEY } from "./js/constants";
+import { WISHLIST_KEY } from "./constants";
 
 export const getWishlist = () => {
-    const data = localStorage.getItem(WISHLIST_KEY);
-    return data ? JSON.parse(data) : [];
+    try {
+        const data = localStorage.getItem(WISHLIST_KEY);
+        return data ? JSON.parse(data) : [];
+    } catch (error) {
+        console.error("Wishlist data corrupted in localStorage:", error);
+        return [];
+    }
 }
 
 export const saveWishlist = (wishlist) => {
