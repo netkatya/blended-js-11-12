@@ -82,3 +82,30 @@
     color: #e05a00;
   }
 }
+
+.load-more {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 28px;
+      background-color: #ff6b0a;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 32px;
+      cursor: pointer;
+      transition: background-color 250ms ease, transform 200ms ease;
+    }
+  
+    .load-more:hover,
+    .load-more:focus {
+      background-color: #e05a00;
+      transform: scale(1.05);
+    }
+  
+    .load-more:disabled {
+      background-color: #4a5568;
+      cursor: not-allowed;
+      transform: none;
+    }
+
