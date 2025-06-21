@@ -4,6 +4,7 @@ import { fetchProductsById } from "./js/products-api";
 import { renderProducts, renderProductInModal } from "./js/render-function";
 import { productsList, notFoundDiv, modal, wishButton, navCount } from "./js/constants";
 import { getWishlist, addToWishlist, removeFromWishlist, isInWishlist } from "./js/storage";
+import { changeTheme } from "./js/helpers";
     
     
 // Функція оновлення кількості у навігації
@@ -87,3 +88,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadWishlistProducts();
   updateNavCount(); // оновлення лічильника при завантаженні сторінки
 });
+
+changeTheme();

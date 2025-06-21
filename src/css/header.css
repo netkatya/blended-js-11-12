@@ -78,3 +78,44 @@
     color: #fff;
   }
 }
+
+.theme-toggle {
+  /* position: fixed;
+  top: 20px;
+  right: 20px; */
+  background-color: #000;
+  border: 2px solid #ff6b0a;
+  border-radius: 36px;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ff6b0a;
+  /* z-index: 1000; */
+}
+
+.scroll-up {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #ff6b0a;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 36px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 250ms ease, transform 200ms ease;
+  z-index: 1000;
+}
+
+.scroll-up:hover {
+  background-color: #ff8b0a;
+  transform: scale(1.1);
+}
+
+.hidden {
+  display: none;
+}

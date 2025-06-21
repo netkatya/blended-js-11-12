@@ -2,8 +2,9 @@
 
 import { fetchProducts, fetchProductsByCategory } from './products-api';
 import { renderProducts } from './render-function';
-import { productsList, notFoundDiv, loadButton, loader } from './constants';
+import { productsList, loadButton, loader, themeToggle } from './constants';
 import iziToast from 'izitoast';
+
 
 let currentPage = 1;
 const limit = 12;
@@ -42,3 +43,20 @@ export const loadMoreProducts = async () => {
         loader.style.display = 'none';
     }
 };
+
+// theme 
+export function changeTheme() {
+const savedTheme = localStorage.getItem('theme') || 'light';
+
+document.body.classList.add(`${savedTheme}-theme`);
+
+themeToggle.addEventListener('click', () => {
+    if (document.body.classList.contains('light-theme')) {
+        document.body.classList.replace('light-theme', 'dark-theme');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.classList.replace('dark-theme', 'light-theme');
+        localStorage.setItem('theme', 'light');
+    }
+});
+}

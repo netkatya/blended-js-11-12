@@ -4,6 +4,7 @@ import { renderProducts, renderProductInModal } from "./js/render-function";
 import { productsList, notFoundDiv, modal, cartButton, navCountCart, cartCount, cartPrice, cartSummaryButton } from "./js/constants";
 import { getCart, addToCart, removeFromCart, isInCart } from "./js/storage";
 import iziToast from "izitoast";
+import { changeTheme } from "./js/helpers";
     
     
 // Функція оновлення кількості у навігації
@@ -143,3 +144,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavCountCart(); // оновлення лічильника при завантаженні сторінки
     updatecartSummary(); 
 });
+
+changeTheme();

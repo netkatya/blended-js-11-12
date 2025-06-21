@@ -4,7 +4,7 @@ import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsB
 import { renderCategories, renderProducts, renderProductInModal } from "./js/render-function";
 import { categoriesList, productsList, notFoundDiv, modal, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton, navCount, cartButton, navCountCart, loader, loadButton } from "./js/constants";
 import { addToWishlist, removeFromWishlist, isInWishlist, getWishlist, getCart, addToCart, removeFromCart, isInCart } from './js/storage';
-import { loadMoreProducts, resetPagination } from "./js/helpers";
+import { loadMoreProducts, resetPagination, changeTheme } from "./js/helpers";
 
 let currentPage = 1;
 const limit = 12;
@@ -179,3 +179,20 @@ clearSearchBtn.addEventListener("click", async () => {
 
 // Load More button
 loadButton.addEventListener('click', loadMoreProducts);
+
+changeTheme();
+
+
+const scrollUpButton = document.querySelector('.scroll-up');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollUpButton.classList.remove('hidden');
+    } else {
+        scrollUpButton.classList.add('hidden');
+    }
+});
+
+scrollUpButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});

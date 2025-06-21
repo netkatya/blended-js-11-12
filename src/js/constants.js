@@ -24,3 +24,4 @@ export const cartCount = document.querySelector("[data-count]");
 export const cartPrice = document.querySelector("[data-price]");
 export const cartSummaryButton = document.querySelector(".cart-summary__btn");
 export const loader = document.querySelector('.loader');
+export const themeToggle = document.querySelector(".theme-toggle");
