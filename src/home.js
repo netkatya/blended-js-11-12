@@ -139,10 +139,12 @@ searchForm.addEventListener("submit", async (event) => {
         if (products.length === 0) {
             notFoundDiv.classList.add('not-found--visible');
             productsList.innerHTML = '';
+            loadButton.style.display = 'none';
         } else {
             notFoundDiv.classList.remove('not-found--visible');
             renderProducts(products);
-            loadButton.style.display = 'none';
+            
+
         }
     } catch (error) {
         console.error('Error searching products:', error);

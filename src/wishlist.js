@@ -2,9 +2,10 @@
 
 import { fetchProductsById } from "./js/products-api";
 import { renderProducts, renderProductInModal } from "./js/render-function";
-import { productsList, notFoundDiv, modal, wishButton, navCount } from "./js/constants";
-import { getWishlist, addToWishlist, removeFromWishlist, isInWishlist } from "./js/storage";
+import { productsList, notFoundDiv, modal, wishButton, navCount, cartButton, navCountCart } from "./js/constants";
+import { getWishlist, addToWishlist, removeFromWishlist, isInWishlist, addToCart, isInCart, removeFromCart, getCart } from "./js/storage";
 import { changeTheme } from "./js/helpers";
+
     
     
 // Функція оновлення кількості у навігації
@@ -21,6 +22,7 @@ const updateWishlistButton = (productId) => {
     wishButton.textContent = 'Add to Wishlist';
   }
 };
+
 
 // Завантажити продукти з wishlist та відрендерити їх
 const loadWishlistProducts = async () => {
@@ -70,7 +72,32 @@ productsList.addEventListener("click", async (event) => {
       updateWishlistButton(productId);
       updateNavCount();
       loadWishlistProducts(); // Оновлюємо список на сторінці Wishlist після видалення
-    };
+      };
+      
+      // Логіка додавання/видалення до cart
+    
+const updateCartButton = (productId) => {
+    if (isInCart(productId)) {
+        cartButton.textContent = "Remove from Cart"; 
+    } else {
+        cartButton.textContent = "Add to Cart"; 
+    }
+}
+
+const updateNavCountCart = () => {
+    const cart = getCart();
+    navCountCart.textContent = cart.length;
+}
+      
+cartButton.onclick = () => {
+  if (isInCart(productId)) {
+      removeFromCart(productId);
+  } else {
+      addToCart(productId);
+  }
+  updateCartButton(productId);
+    updateNavCountCart();
+};
 
   } catch (error) {
     console.error('Помилка при завантаженні продукту:', error);
