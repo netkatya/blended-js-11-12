@@ -14,6 +14,11 @@ const updateNavCount = () => {
   navCount.textContent = wishlist.length;
 };
 
+const updateNavCountCart = () => {
+    const cart = getCart();
+    navCountCart.textContent = cart.length;
+}
+
 // Функція оновлення кнопки Wishlist в модалці
 const updateWishlistButton = (productId) => {
   if (isInWishlist(productId)) {
@@ -63,40 +68,41 @@ productsList.addEventListener("click", async (event) => {
     updateWishlistButton(productId);
 
     // Логіка додавання/видалення до Wishlist
-    wishButton.onclick = () => {
-      if (isInWishlist(productId)) {
+wishButton.onclick = () => {
+    if (isInWishlist(productId)) {
         removeFromWishlist(productId);
-      } else {
+    } else {
         addToWishlist(productId);
-      }
-      updateWishlistButton(productId);
-      updateNavCount();
-      loadWishlistProducts(); // Оновлюємо список на сторінці Wishlist після видалення
-      };
+    }
+        updateWishlistButton(productId);
+        updateNavCount();
+        loadWishlistProducts(); // Оновлюємо список на сторінці Wishlist після видалення
+};
       
-      // Логіка додавання/видалення до cart
+// Логіка додавання/видалення до cart
     
 const updateCartButton = (productId) => {
     if (isInCart(productId)) {
         cartButton.textContent = "Remove from Cart"; 
+        removeFromWishlist(productId);
+        loadWishlistProducts();
+        updateNavCount();
+
     } else {
         cartButton.textContent = "Add to Cart"; 
     }
 }
 
-const updateNavCountCart = () => {
-    const cart = getCart();
-    navCountCart.textContent = cart.length;
-}
+
       
 cartButton.onclick = () => {
-  if (isInCart(productId)) {
-      removeFromCart(productId);
-  } else {
-      addToCart(productId);
-  }
-  updateCartButton(productId);
-    updateNavCountCart();
+    if (isInCart(productId)) {
+        removeFromCart(productId);
+    } else {
+        addToCart(productId);
+    }
+        updateCartButton(productId);
+        updateNavCountCart();
 };
 
   } catch (error) {
@@ -106,14 +112,15 @@ cartButton.onclick = () => {
 
 // Закриття модалки
 modal.addEventListener("click", (event) => {
-  if (event.target === modal || event.target.classList.contains("modal__close-btn")) {
-    modal.classList.remove("modal--is-open");
-  }
+    if (event.target === modal || event.target.classList.contains("modal__close-btn")) {
+        modal.classList.remove("modal--is-open");
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadWishlistProducts();
-  updateNavCount(); // оновлення лічильника при завантаженні сторінки
+    loadWishlistProducts();
+    updateNavCount(); // оновлення лічильника при завантаженні сторінки
+    updateNavCountCart();
 });
 
 changeTheme();

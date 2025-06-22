@@ -1,14 +1,19 @@
 //Логіка сторінки Cart
 import { fetchProductsById } from "./js/products-api";
 import { renderProducts, renderProductInModal } from "./js/render-function";
-import { productsList, notFoundDiv, modal, cartButton, navCountCart, cartCount, cartPrice, cartSummaryButton } from "./js/constants";
-import { getCart, addToCart, removeFromCart, isInCart } from "./js/storage";
+import { productsList, notFoundDiv, modal, cartButton, navCountCart, cartCount, cartPrice, cartSummaryButton, navCount } from "./js/constants";
+import { getCart, addToCart, removeFromCart, isInCart, getWishlist } from "./js/storage";
 import iziToast from "izitoast";
 import { changeTheme } from "./js/helpers";
     
     
 // Функція оновлення кількості у навігації
 const updateNavCountCart = () => {
+  const wishlist = getWishlist();
+  navCount.textContent = wishlist.length;
+};
+
+const updateNavCount = () => {
   const cart = getCart();
   navCountCart.textContent = cart.length;
 };
@@ -55,23 +60,23 @@ const updatecartSummary = async () => {
 const loadCartProducts = async () => {
   const cart = getCart();
 
-  if (cart.length === 0) {
-    notFoundDiv.classList.add('not-found--visible');
-    productsList.innerHTML = '';
-    return;
-  }
+    if (cart.length === 0) {
+        notFoundDiv.classList.add('not-found--visible');
+        productsList.innerHTML = '';
+        return;
+    }
 
-  try {
-    const productPromises = cart.map(id => fetchProductsById(id));
-    const products = await Promise.all(productPromises);
+    try {
+        const productPromises = cart.map(id => fetchProductsById(id));
+        const products = await Promise.all(productPromises);
 
-    notFoundDiv.classList.remove('not-found--visible');
-    renderProducts(products);
-  } catch (error) {
-    console.error('Помилка при завантаженні cart:', error);
-    notFoundDiv.classList.add('not-found--visible');
-    productsList.innerHTML = '';
-  }
+        notFoundDiv.classList.remove('not-found--visible');
+        renderProducts(products);
+    } catch (error) {
+        console.error('Помилка при завантаженні cart:', error);
+        notFoundDiv.classList.add('not-found--visible');
+        productsList.innerHTML = '';
+    }
 };
 
 // При кліку на продукт відкриваємо модалку
@@ -119,11 +124,11 @@ cartSummaryButton.addEventListener('click', async () => {
     return;
   }
 
-  iziToast.success({
-        title: 'Success!',
-        message: 'Products purchased successfully!',
-        position: "topLeft"
-  });
+iziToast.success({
+    title: 'Success!',
+    message: 'Products purchased successfully!',
+    position: "topLeft"
+});
 
   localStorage.removeItem('cart'); // очищаємо cart
   await loadCartProducts();
@@ -141,7 +146,8 @@ modal.addEventListener("click", (event) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCartProducts();
-    updateNavCountCart(); // оновлення лічильника при завантаженні сторінки
+    updateNavCountCart();// оновлення лічильника при завантаженні сторінки
+    updateNavCount();
     updatecartSummary(); 
 });
 
