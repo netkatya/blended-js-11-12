@@ -21,6 +21,11 @@ export function renderProducts(products) {
         <p class="products__brand"><span class="products__brand--bold">Brand:${product.brand}</span></p>
         <p class="products__category">Category:${product.category} </p>
         <p class="products__price">Price: $${product.price}</p>
+        <div class="product-quantity">
+            <button class="minus-button quantity-button">-</button>
+            <input type="number" value="1" min="1" max="100" class="quantity-input" readonly>
+            <button class="plus-button quantity-button">+</button>
+        </div>
     </li>`
     ).join("");
 
