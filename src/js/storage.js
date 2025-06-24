@@ -1,5 +1,5 @@
 //Робота з loacalStorage
-import { WISHLIST_KEY, CART_KEY, THEME_KEY } from "./constants";
+import { WISHLIST_KEY, CART_KEY } from "./constants";
 
 // Wishlist
 export const getWishlist = () => {
@@ -69,4 +69,4 @@ export const isInCart = (productId) => {
   return cart.includes(productId);
 };
 
-// theme
+

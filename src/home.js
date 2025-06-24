@@ -1,10 +1,12 @@
 //Логіка сторінки Home
 
-import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsById, searchProducts } from "./js/products-api";
+import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsById, searchProducts, fetchTotalProductsCount } from "./js/products-api";
 import { renderCategories, renderProducts, renderProductInModal } from "./js/render-function";
-import { categoriesList, productsList, notFoundDiv, modal, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton, navCount, cartButton, navCountCart, loader, loadButton } from "./js/constants";
+import { categoriesList, productsList, notFoundDiv, modal, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton, navCount, cartButton, navCountCart, loader, loadButton, paginationContainer } from "./js/constants";
 import { addToWishlist, removeFromWishlist, isInWishlist, getWishlist, getCart, addToCart, removeFromCart, isInCart } from './js/storage';
-import { loadMoreProducts, resetPagination, changeTheme } from "./js/helpers";
+import { resetPagination, initPagination, loadProductsByPage, changeTheme } from "./js/helpers";
+
+changeTheme();
 
 let currentPage = 1;
 const limit = 12;
@@ -72,11 +74,11 @@ categoriesList.addEventListener("click", async (event) => {
         if (products.length === 0) {
             notFoundDiv.classList.add('not-found--visible');
             productsList.innerHTML = '';
-            loadButton.style.display = 'none';
+            paginationContainer.style.display = 'none';
         } else {
             notFoundDiv.classList.remove('not-found--visible');
             renderProducts(products);
-            loadButton.style.display = 'block';
+            paginationContainer.style.display = 'flex';
         }
     } catch (error) {
         console.error('Error loading category:', error);
@@ -180,9 +182,9 @@ clearSearchBtn.addEventListener("click", async () => {
 });
 
 // Load More button
-loadButton.addEventListener('click', loadMoreProducts);
+// loadButton.addEventListener('click', loadMoreProducts);
 
-changeTheme();
+
 
 
 const scrollUpButton = document.querySelector('.scroll-up');
@@ -198,3 +200,21 @@ window.addEventListener('scroll', () => {
 scrollUpButton.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    resetPagination();
+    changeTheme();
+
+    // Get total items count for pagination
+    const totalItems = await fetchTotalProductsCount(); // implement this based on your API
+    initPagination(totalItems);
+
+    // Load first page
+    loadProductsByPage(1);
+});
+
+
+changeTheme();

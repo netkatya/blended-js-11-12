@@ -110,7 +110,7 @@
 }
 
 
-.load-more {
+/* .load-more {
       display: block;
       margin: 30px auto;
       padding: 12px 28px;
@@ -135,4 +135,27 @@
       cursor: not-allowed;
       transform: none;
     }
+ */
 
+.tui-pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.tui-page-btn {
+    background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      text-transform: capitalize;
+      color: #e05a00;
+}
+
+.tui-page-btn:hover {
+  background-color: #ddd;
+}

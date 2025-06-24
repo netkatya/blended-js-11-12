@@ -47,12 +47,12 @@ productsList.addEventListener("click", async (event) => {
     renderProductInModal(product);
     modal.classList.add("modal--is-open");
 
-    // Оновлюємо кнопку Wishlist:
-      updateWishlistButton(productId);
-    // Оновлюємо кнопку Cart:
-      updateCartButton(productId);
+// Оновлюємо кнопку Wishlist:
+    updateWishlistButton(productId);
+// Оновлюємо кнопку Cart:
+    updateCartButton(productId);
 
-    // Логіка додавання/видалення при кліку:
+// Логіка додавання/видалення при кліку:
     wishButton.onclick = () => {
       if (isInWishlist(productId)) {
         removeFromWishlist(productId);
