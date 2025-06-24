@@ -25,3 +25,7 @@ body.dark-theme {
   background-color: #1c1c1c;
   color: #ffffff;
 }
+
+.hidden {
+  display: none;
+}

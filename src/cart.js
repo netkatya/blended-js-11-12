@@ -1,24 +1,24 @@
-//Логіка сторінки Cart
 import { fetchProductsById } from "./js/products-api";
 import { renderProducts, renderProductInModal } from "./js/render-function";
 import { productsList, notFoundDiv, modal, cartButton, navCountCart, cartCount, cartPrice, cartSummaryButton, navCount } from "./js/constants";
 import { getCart, addToCart, removeFromCart, isInCart, getWishlist } from "./js/storage";
 import iziToast from "izitoast";
 import { changeTheme } from "./js/helpers";
-    
-    
-// Функція оновлення кількості у навігації
-const updateNavCountCart = () => {
+
+// Оновлюємо лічильник в навігації для Wishlist
+const updateNavCount = () => {
   const wishlist = getWishlist();
   navCount.textContent = wishlist.length;
 };
 
-const updateNavCount = () => {
+// Оновлюємо лічильник в навігації для Cart
+const updateNavCountCart = () => {
   const cart = getCart();
-  navCountCart.textContent = cart.length;
+  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  navCountCart.textContent = totalCount;
 };
 
-// Функція оновлення кнопки Cart в модалці
+// Оновлення тексту кнопки Cart у модальному вікні
 const updateCartButton = (productId) => {
   if (isInCart(productId)) {
     cartButton.textContent = 'Remove from Cart';
@@ -27,64 +27,92 @@ const updateCartButton = (productId) => {
   }
 };
 
-
-// Оновлення Total Items та Total Price
+// Оновлення підсумку по кількості товарів та ціні у кошику
 const updatecartSummary = async () => {
-    const cart = getCart();
+  const cart = getCart();
 
-
-    if (cart.length === 0) {
-        cartCount.textContent = "0";
-        cartPrice.textContent = "$0.00";
-        return;
-    }
-    
-    try {
-        const productPromises = cart.map(id => fetchProductsById(id));
-        const products = await Promise.all(productPromises);
-
-        cartCount.textContent = products.length;
-
-        const total = products.reduce((sum, product) => sum + (product.price || 0), 0);
-            
-        cartPrice.textContent = `$${total.toFixed(2)}`;
-    } catch (error) {
-    console.error('Помилка при підрахунку Total:', error);
-    cartCount.textContent = '0';
-    cartPrice.textContent = '$0.00';
+  if (cart.length === 0) {
+    cartCount.textContent = "0";
+    cartPrice.textContent = "$0.00";
+    return;
   }
-}
 
+  const validCartItems = cart.filter(item => typeof item.id !== 'undefined');
 
-// Завантажити продукти з cart та відрендерити їх
+  if (validCartItems.length === 0) {
+    cartCount.textContent = "0";
+    cartPrice.textContent = "$0.00";
+    return;
+  }
+
+  try {
+    const products = await Promise.all(validCartItems.map(item => fetchProductsById(item.id)));
+    const totalCount = validCartItems.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalCount;
+
+    const totalPrice = products.reduce((sum, product) => {
+      const item = validCartItems.find(i => i.id === product.id);
+      return sum + product.price * (item ? item.quantity : 1);
+    }, 0);
+    cartPrice.textContent = `$${totalPrice.toFixed(2)}`;
+  } catch (error) {
+    console.error('Помилка при оновленні підсумку кошика:', error);
+    cartCount.textContent = "0";
+    cartPrice.textContent = "$0.00";
+  }
+};
+
+// Завантаження та відображення товарів з кошика
 const loadCartProducts = async () => {
   const cart = getCart();
 
-    if (cart.length === 0) {
-        notFoundDiv.classList.add('not-found--visible');
-        productsList.innerHTML = '';
-        return;
-    }
+  if (cart.length === 0) {
+    notFoundDiv.classList.add('not-found--visible');
+    productsList.innerHTML = '';
+    return;
+  }
 
-    try {
-        const productPromises = cart.map(id => fetchProductsById(id));
-        const products = await Promise.all(productPromises);
+  // Фільтруємо тільки валідні id
+  const validCartItems = cart.filter(item => typeof item.id !== 'undefined');
 
-        notFoundDiv.classList.remove('not-found--visible');
-        renderProducts(products);
-    } catch (error) {
-        console.error('Помилка при завантаженні cart:', error);
-        notFoundDiv.classList.add('not-found--visible');
-        productsList.innerHTML = '';
-    }
+  if (validCartItems.length === 0) {
+    notFoundDiv.classList.add('not-found--visible');
+    productsList.innerHTML = '';
+    return;
+  }
+
+  try {
+    const products = await Promise.all(validCartItems.map(item => fetchProductsById(item.id)));
+    const productsWithQuantity = products.map(product => {
+      const cartItem = validCartItems.find(i => i.id === product.id);
+      return { ...product, quantity: cartItem ? cartItem.quantity : 1 };
+    });
+
+    notFoundDiv.classList.remove('not-found--visible');
+    renderProducts(productsWithQuantity);
+
+    const quantityElements = document.querySelectorAll(".product-quantity-product");
+    quantityElements.forEach(el => el.classList.remove("hidden"));
+  } catch (error) {
+    console.error('Помилка при завантаженні продуктів кошика:', error);
+    notFoundDiv.classList.add('not-found--visible');
+    productsList.innerHTML = '';
+  }
 };
 
-// При кліку на продукт відкриваємо модалку
+
+// Обробник кліку по товару — відкриває модалку
 productsList.addEventListener("click", async (event) => {
-  const productItem = event.target.closest("li.products__item");
+    const target = event.target;
+
+    if (target.classList.contains('quantity-button')) {
+    return; // Просто виходимо з обробника
+  }
+
+  const productItem = target.closest("li.products__item");
   if (!productItem) return;
 
-  const productId = productItem.dataset.id;
+  const productId = Number(productItem.dataset.id);
   if (!productId) return;
 
   try {
@@ -94,43 +122,42 @@ productsList.addEventListener("click", async (event) => {
 
     updateCartButton(productId);
 
-    // Логіка додавання/видалення до Wishlist
-    cartButton.onclick = () => {
+    cartButton.onclick = async () => {
       if (isInCart(productId)) {
         removeFromCart(productId);
       } else {
         addToCart(productId);
       }
-        updateCartButton(productId);
-        updateNavCountCart();
-        loadCartProducts(); // Оновлюємо список на сторінці Wishlist після видалення
-        updatecartSummary();
+      updateCartButton(productId);
+      updateNavCountCart();
+      await loadCartProducts();
+      await updatecartSummary();
     };
-
   } catch (error) {
     console.error('Помилка при завантаженні продукту:', error);
   }
 });
 
+// Кнопка оформлення покупки
 cartSummaryButton.addEventListener('click', async () => {
   const cart = getCart();
 
   if (cart.length === 0) {
     iziToast.warning({
-        title: 'Oops!',
-        message: 'Your cart is empty!',
-        position: "topLeft"
+      title: 'Oops!',
+      message: 'Your cart is empty!',
+      position: "topLeft"
     });
     return;
   }
 
-iziToast.success({
+  iziToast.success({
     title: 'Success!',
     message: 'Products purchased successfully!',
     position: "topLeft"
-});
+  });
 
-  localStorage.removeItem('cart'); // очищаємо cart
+  localStorage.removeItem('cart'); // Очищуємо корзину
   await loadCartProducts();
   updateNavCountCart();
   await updatecartSummary();
@@ -143,12 +170,11 @@ modal.addEventListener("click", (event) => {
   }
 });
 
-
+// Початкове завантаження сторінки
 document.addEventListener('DOMContentLoaded', () => {
-    loadCartProducts();
-    updateNavCountCart();// оновлення лічильника при завантаженні сторінки
-    updateNavCount();
-    updatecartSummary(); 
+  loadCartProducts();
+  updateNavCountCart();
+  updateNavCount();
+  updatecartSummary();
+  changeTheme();
 });
-
-changeTheme();

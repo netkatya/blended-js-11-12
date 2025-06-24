@@ -39,34 +39,53 @@ export const isInWishlist = (productId) => {
 export const getCart = () => {
     try {
         const data = localStorage.getItem(CART_KEY);
-        return data ? JSON.parse(data) : [];
+        const cart = data ? JSON.parse(data) : [];
+        // Фільтруємо товари без валідного id
+        return cart.filter(item => item && (typeof item.id === 'number' || typeof item.id === 'string'));
     } catch (error) {
         console.error("Cart data corrupted in localStorage:", error);
         return [];
     }
-}
+};
 
 export const saveCart = (cart) => {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
-}
+};
 
 export const addToCart = (productId) => {
     const cart = getCart();
-    if (!cart.includes(productId)) {
-        cart.push(productId);
-        saveCart(cart);
+    const item = cart.find(p => p.id === productId);
+    if (item) {
+        item.quantity += 1;
+    } else {
+        cart.push({ id: productId, quantity: 1 });
     }
-}
+    saveCart(cart);
+};
 
 export const removeFromCart = (productId) => {
-  let cart = getCart();
-  cart = cart.filter(id => id !== productId);
-  saveCart(cart);
+    let cart = getCart();
+    const item = cart.find(p => p.id === productId);
+
+    if (!item) return;
+
+    if (item.quantity > 1) {
+        item.quantity -= 1;
+    } else {
+        cart = cart.filter(p => p.id !== productId);
+    }
+
+    saveCart(cart);
 };
 
 export const isInCart = (productId) => {
-  const cart = getCart();
-  return cart.includes(productId);
+    const cart = getCart();
+    return cart.some(p => p.id === productId);
 };
 
+export const getProductQuantity = (productId) => {
+    const cart = getCart();
+    const item = cart.find(p => p.id === productId);
+    return item ? item.quantity : 0;
+};
 

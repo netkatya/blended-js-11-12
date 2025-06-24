@@ -28,4 +28,5 @@ export const themeToggle = document.querySelector(".theme-toggle");
 export const minusButton = document.querySelector(".minus-button");
 export const plusButton = document.querySelector(".plus-button");
 export const quantityInput = document.querySelector(".quantity-input");
-export const paginationContainer = document.querySelector(".tui-pagination") 
+export const paginationContainer = document.querySelector(".tui-pagination");
+

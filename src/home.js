@@ -2,7 +2,7 @@
 
 import { fetchCategories, fetchProducts, fetchProductsByCategory, fetchProductsById, searchProducts, fetchTotalProductsCount } from "./js/products-api";
 import { renderCategories, renderProducts, renderProductInModal } from "./js/render-function";
-import { categoriesList, productsList, notFoundDiv, modal, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton, navCount, cartButton, navCountCart, loader, loadButton, paginationContainer } from "./js/constants";
+import { categoriesList, productsList, notFoundDiv, modal, searchForm, searchInput, categoryButtons, clearSearchBtn, wishButton, navCount, cartButton, navCountCart, loader, loadButton, paginationContainer, } from "./js/constants";
 import { addToWishlist, removeFromWishlist, isInWishlist, getWishlist, getCart, addToCart, removeFromCart, isInCart } from './js/storage';
 import { resetPagination, initPagination, loadProductsByPage, changeTheme } from "./js/helpers";
 
@@ -18,7 +18,8 @@ const updateNavCount = () => {
 
 const updateNavCountCart = () => {
   const cart = getCart();
-  navCountCart.textContent = cart.length;
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  navCountCart.textContent = totalQuantity;
 };
 
 const updateWishlistButton = (productId) => {
@@ -78,7 +79,10 @@ categoriesList.addEventListener("click", async (event) => {
         } else {
             notFoundDiv.classList.remove('not-found--visible');
             renderProducts(products);
-            paginationContainer.style.display = 'flex';
+            // paginationContainer.style.display = 'flex';
+            if (productCartQuantity) {
+                productCartQuantity.style.display = "none";
+            }
         }
     } catch (error) {
         console.error('Error loading category:', error);
@@ -88,7 +92,9 @@ categoriesList.addEventListener("click", async (event) => {
 });
 
 productsList.addEventListener("click", async (event) => {
-    const productItem = event.target.closest("li.products__item");
+    const target = event.target;
+
+    const productItem = target.closest("li.products__item");
     if (!productItem) return;
 
     const productId = productItem.dataset.id;

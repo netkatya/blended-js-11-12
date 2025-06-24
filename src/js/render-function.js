@@ -21,6 +21,11 @@ export function renderProducts(products) {
         <p class="products__brand"><span class="products__brand--bold">Brand:${product.brand}</span></p>
         <p class="products__category">Category:${product.category} </p>
         <p class="products__price">Price: $${product.price}</p>
+        <div class="product-quantity-product hidden" >
+                <button class="minus-button quantity-button">-</button>
+                <input type="number" value="1" min="1" max="100" class="quantity-input" readonly>
+                <button class="plus-button quantity-button">+</button>
+        </div>
     </li>`
     ).join("");
 
@@ -41,11 +46,6 @@ export function renderProductInModal(product) {
             <p class="modal-product__shipping-information">Shipping: Free worldwide shipping</p>
             <p class="modal-product__return-policy">Return Policy: 30 days money back guarantee</p>
             <p class="modal-product__price">Price: $${price}</p>
-            <div class="product-quantity">
-                <button class="minus-button quantity-button">-</button>
-                <input type="number" value="1" min="1" max="100" class="quantity-input" readonly>
-                <button class="plus-button quantity-button">+</button>
-            </div>
         </div>
     `;
 }
