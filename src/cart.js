@@ -1,7 +1,7 @@
 import { fetchProductsById } from "./js/products-api";
 import { renderProducts, renderProductInModal } from "./js/render-function";
 import { productsList, notFoundDiv, modal, cartButton, navCountCart, cartCount, cartPrice, cartSummaryButton, navCount } from "./js/constants";
-import { getCart, addToCart, removeFromCart, isInCart, getWishlist } from "./js/storage";
+import { getCart, addToCart, removeFromCart, isInCart, getWishlist, saveCart } from "./js/storage";
 import iziToast from "izitoast";
 import { changeTheme } from "./js/helpers";
 
@@ -178,3 +178,59 @@ document.addEventListener('DOMContentLoaded', () => {
   updatecartSummary();
   changeTheme();
 });
+
+document.addEventListener("click", async (event) => {
+  const plusBtn = event.target.closest(".plus-button");
+  const minusBtn = event.target.closest(".minus-button");
+
+  if (plusBtn || minusBtn) {
+    const productDiv = event.target.closest(".product");
+
+    if (!productDiv) return;
+
+    const productId = productDiv.dataset.id;
+    if (!productId) return;
+
+const input = productDiv.querySelector(".quantity-input");
+if (!input) return;
+
+let quantity = parseInt(input.value, 10) || 0;
+
+if (plusBtn) {
+  quantity += 1;
+} else if (minusBtn && quantity > 0) {
+  quantity -= 1;
+}
+
+input.value = quantity;
+
+    if (quantity > 0) {
+      updateCartItem(productId, quantity);
+    } else {
+      removeFromCart(productId);
+    }
+
+    // ✅ Refresh cart after quantity change
+    
+    await updatecartSummary();
+    updateNavCountCart();
+  }
+});
+
+export const updateCartItem = (productId, quantity) => {
+  const id = Number(productId); // ⬅ Normalize to number
+  let cart = getCart();
+  const itemIndex = cart.findIndex(p => Number(p.id) === id);
+
+  if (itemIndex !== -1) {
+    if (quantity > 0) {
+      cart[itemIndex].quantity = quantity;
+    } else {
+      cart.splice(itemIndex, 1);
+    }
+  } else if (quantity > 0) {
+    cart.push({ id, quantity });
+  }
+
+  saveCart(cart);
+};
