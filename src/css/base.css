@@ -17,7 +17,7 @@
 }
 
 body.light-theme {
-  background-color: #ffffff;
+  background-color: #f7f5f2;
   color: #000000;
   transition: background-color 500ms ease-in-out;
 }
