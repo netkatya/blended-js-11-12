@@ -120,4 +120,6 @@ body.dark-theme header {
   background: linear-gradient(135deg, #3a3a3a, #cc6600);
 }
   
-
+body.light-theme header {
+  background: linear-gradient(135deg, #ffffff, #ff9900);
+}
