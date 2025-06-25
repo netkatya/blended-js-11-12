@@ -19,11 +19,13 @@
 body.light-theme {
   background-color: #ffffff;
   color: #000000;
+  transition: background-color 500ms ease-in-out;
 }
 
 body.dark-theme {
   background-color: #1c1c1c;
   color: #ffffff;
+  transition: background-color 500ms ease-in-out;
 }
 
 .hidden {
