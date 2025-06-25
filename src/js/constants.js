@@ -1,4 +1,4 @@
-//Константи
+// Constants
 
 export const STORAGE_KEYS = {};
 export const WISHLIST_KEY = 'wishlist';

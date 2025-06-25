@@ -39,7 +39,7 @@ export async function searchProducts(query, page = 1, limit = 12) {
 
 export async function fetchTotalProductsCount() {
     const { data } = await axios.get(`/products?limit=1`);
-    return data.total; // ✔️ Will return the total number of products
+    return data.total; //  Will return the total number of products
 }
 
 

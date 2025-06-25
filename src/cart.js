@@ -73,7 +73,7 @@ const loadCartProducts = async () => {
     return;
   }
 
-  // Фільтруємо тільки валідні id
+  // filtre valid id
   const validCartItems = cart.filter(item => typeof item.id !== 'undefined');
 
   if (validCartItems.length === 0) {
@@ -102,7 +102,7 @@ const loadCartProducts = async () => {
 };
 
 
-// Обробник кліку по товару — відкриває модалку
+// open modal
 productsList.addEventListener("click", async (event) => {
     const target = event.target;
 
@@ -139,7 +139,7 @@ productsList.addEventListener("click", async (event) => {
   }
 });
 
-// Кнопка оформлення покупки
+// buy button
 cartSummaryButton.addEventListener('click', async () => {
   const cart = getCart();
 
@@ -164,14 +164,14 @@ cartSummaryButton.addEventListener('click', async () => {
   await updatecartSummary();
 });
 
-// Закриття модалки
+// close modal
 modal.addEventListener("click", (event) => {
   if (event.target === modal || event.target.classList.contains("modal__close-btn")) {
     modal.classList.remove("modal--is-open");
   }
 });
 
-// Початкове завантаження сторінки
+// first load page
 document.addEventListener('DOMContentLoaded', () => {
   loadCartProducts();
   updateNavCountCart();
@@ -212,7 +212,7 @@ input.value = quantity;
      
     }
 
-    // ✅ Refresh cart after quantity change
+    // Refresh cart after quantity change
     
     await updatecartSummary();
     updateNavCountCart();

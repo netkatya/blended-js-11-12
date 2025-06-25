@@ -8,7 +8,7 @@ import { changeTheme } from "./js/helpers";
 
     
     
-// Функція оновлення кількості у навігації
+// update in navigation
 const updateNavCount = () => {
   const wishlist = getWishlist();
   navCount.textContent = wishlist.length;
@@ -20,7 +20,7 @@ const updateNavCountCart = () => {
   navCountCart.textContent = totalQuantity;
 }
 
-// Функція оновлення кнопки Wishlist в модалці
+// update Wishlist button in modal
 const updateWishlistButton = (productId) => {
   if (isInWishlist(productId)) {
     wishButton.textContent = 'Remove from Wishlist';
@@ -30,7 +30,7 @@ const updateWishlistButton = (productId) => {
 };
 
 
-// Завантажити продукти з wishlist та відрендерити їх
+// load products from wishlist and render
 const loadWishlistProducts = async () => {
   const wishlist = getWishlist();
 
@@ -53,7 +53,7 @@ const loadWishlistProducts = async () => {
   }
 };
 
-// При кліку на продукт відкриваємо модалку
+// open modal clicking product
 productsList.addEventListener("click", async (event) => {
   const productItem = event.target.closest("li.products__item");
   if (!productItem) return;
@@ -124,7 +124,7 @@ modal.addEventListener("click", (event) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadWishlistProducts();
-    updateNavCount(); // оновлення лічильника при завантаженні сторінки
+    updateNavCount(); // update count on page load
     updateNavCountCart();
 });
 

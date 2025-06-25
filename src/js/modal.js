@@ -4,19 +4,19 @@ import { navCount, wishButton, productsList, modal, navCountCart, cartButton } f
 import { fetchProductsById } from './js/products-api';
 import { renderProductInModal } from './js/render-function';
 
-// Оновлення кількості в навігації wishlist
+// update wishlist navigation
 const updateNavCount = () => {
   const wishlist = getWishlist();
   navCount.textContent = wishlist.length;
 };
 
-// Оновлення кількості в навігації cart
+// update cart navigation
 const updateNavCountCart = () => {
   const cart = getCart();
   navCountCart.textContent = cart.length;
 };
 
-// Функція для оновлення кнопки wishlist в модалці:
+// update wishlist buttom in modal:
 const updateWishlistButton = (productId) => {
   if (isInWishlist(productId)) {
     wishButton.textContent = 'Remove from Wishlist';
@@ -25,7 +25,7 @@ const updateWishlistButton = (productId) => {
   }
 };
 
-// Функція для оновлення кнопки cart в модалці:
+// update cart buttom in modal:
 const updateCartButton = (productId) => {
   if (isInCart(productId)) {
     cartButton.textContent = 'Remove from Cart';
@@ -34,7 +34,7 @@ const updateCartButton = (productId) => {
   }
 };
 
-// При відкритті модалки:
+// Open modal:
 productsList.addEventListener("click", async (event) => {
   const productItem = event.target.closest("li.products__item");
   if (!productItem) return;
@@ -47,12 +47,12 @@ productsList.addEventListener("click", async (event) => {
     renderProductInModal(product);
     modal.classList.add("modal--is-open");
 
-// Оновлюємо кнопку Wishlist:
+// update Wishlist button:
     updateWishlistButton(productId);
-// Оновлюємо кнопку Cart:
+// update Cart button:
     updateCartButton(productId);
 
-// Логіка додавання/видалення при кліку:
+// add/remove on click:
     wishButton.onclick = () => {
       if (isInWishlist(productId)) {
         removeFromWishlist(productId);
