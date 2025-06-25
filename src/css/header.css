@@ -80,9 +80,6 @@
 }
 
 .theme-toggle {
-  /* position: fixed;
-  top: 20px;
-  right: 20px; */
   background-color: #000;
   border: 2px solid #ff6b0a;
   border-radius: 36px;
@@ -91,7 +88,6 @@
   cursor: pointer;
   font-size: 18px;
   color: #ff6b0a;
-  /* z-index: 1000; */
 }
 
 .scroll-up {
@@ -119,3 +115,9 @@
 .hidden {
   display: none;
 }
+
+body.dark-theme header {
+  background: linear-gradient(135deg, #3a3a3a, #cc6600);
+}
+  
+
