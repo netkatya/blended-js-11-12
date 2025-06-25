@@ -15,8 +15,9 @@ const updateNavCount = () => {
 };
 
 const updateNavCountCart = () => {
-    const cart = getCart();
-    navCountCart.textContent = cart.length;
+  const cart = getCart();
+  const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  navCountCart.textContent = totalQuantity;
 }
 
 // Функція оновлення кнопки Wishlist в модалці
@@ -66,49 +67,53 @@ productsList.addEventListener("click", async (event) => {
     modal.classList.add("modal--is-open");
 
     updateWishlistButton(productId);
+    updateCartButton(productId); // make sure to also update cart button
 
-    // Логіка додавання/видалення до Wishlist
-wishButton.onclick = () => {
-    if (isInWishlist(productId)) {
+    // --- Wishlist Button Logic ---
+    wishButton.onclick = () => {
+      if (isInWishlist(productId)) {
         removeFromWishlist(productId);
-    } else {
+      } else {
         addToWishlist(productId);
-    }
-        updateWishlistButton(productId);
-        updateNavCount();
-        loadWishlistProducts(); // Оновлюємо список на сторінці Wishlist після видалення
-};
-      
-// Логіка додавання/видалення до cart
-    
-const updateCartButton = (productId) => {
-    if (isInCart(productId)) {
-        cartButton.textContent = "Remove from Cart"; 
-        removeFromWishlist(productId);
-        loadWishlistProducts();
-        updateNavCount();
+      }
+      updateWishlistButton(productId);
+      updateNavCount();
+      loadWishlistProducts();
+    };
 
-    } else {
-        cartButton.textContent = "Add to Cart"; 
-    }
-}
-
-
-      
-cartButton.onclick = () => {
-    if (isInCart(productId)) {
+    // --- Cart Button Logic ---
+    cartButton.onclick = () => {
+      if (isInCart(productId)) {
         removeFromCart(productId);
-    } else {
+      } else {
         addToCart(productId);
-    }
-        updateCartButton(productId);
-        updateNavCountCart();
-};
+
+        // Remove from wishlist if added to cart
+        if (isInWishlist(productId)) {
+          removeFromWishlist(productId);
+          updateNavCount();
+          loadWishlistProducts();
+        }
+      }
+
+      updateCartButton(productId);
+      updateNavCountCart();
+    };
 
   } catch (error) {
     console.error('Помилка при завантаженні продукту:', error);
   }
 });
+
+// --- Move helper function outside the listener ---
+const updateCartButton = (productId) => {
+  if (isInCart(productId)) {
+    cartButton.textContent = "Remove from Cart";
+  } else {
+    cartButton.textContent = "Add to Cart";
+  }
+};
+
 
 // Закриття модалки
 modal.addEventListener("click", (event) => {

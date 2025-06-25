@@ -51,8 +51,9 @@ const updatecartSummary = async () => {
     cartCount.textContent = totalCount;
 
     const totalPrice = products.reduce((sum, product) => {
-      const item = validCartItems.find(i => i.id === product.id);
-      return sum + product.price * (item ? item.quantity : 1);
+      const matchingItems = validCartItems.filter(i => i.id === product.id);
+      const quantity = matchingItems.reduce((qSum, i) => qSum + i.quantity, 0);
+      return sum + product.price * quantity;
     }, 0);
     cartPrice.textContent = `$${totalPrice.toFixed(2)}`;
   } catch (error) {
@@ -208,6 +209,7 @@ input.value = quantity;
       updateCartItem(productId, quantity);
     } else {
       removeFromCart(productId);
+     
     }
 
     // ✅ Refresh cart after quantity change

@@ -52,15 +52,18 @@ export const saveCart = (cart) => {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
 };
 
-export const addToCart = (productId) => {
-    const cart = getCart();
-    const item = cart.find(p => p.id === productId);
-    if (item) {
-        item.quantity += 1;
-    } else {
-        cart.push({ id: productId, quantity: 1 });
-    }
-    saveCart(cart);
+export const addToCart = (productId, quantity = 1) => {
+  const id = Number(productId);
+  let cart = getCart();
+  const itemIndex = cart.findIndex(item => item.id === id);
+
+  if (itemIndex !== -1) {
+    cart[itemIndex].quantity += quantity;
+  } else {
+    cart.push({ id, quantity });
+  }
+
+  saveCart(cart);
 };
 
 export const removeFromCart = (productId) => {
